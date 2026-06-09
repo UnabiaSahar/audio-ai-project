@@ -1,0 +1,11 @@
+# Ignore environments and cache
+venv/
+__pycache__/
+.vscode/
+
+# Ignore heavy data and processed files
+data/
+processed/
+
+# Ignore model checkpoints
+models/*.pth
