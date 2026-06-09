@@ -12,7 +12,15 @@ def evaluate():
     
     # Load Test Data
     full_dataset = ESC50Dataset(csv_path='data/meta/esc50.csv', processed_dir='processed')
-    _, test_dataset = random_split(full_dataset, [int(0.8 * len(full_dataset)), len(full_dataset) - int(0.8 * len(full_dataset))])
+
+    # Define sizes
+    train_size = int(0.8 * len(full_dataset))
+    test_size = len(full_dataset) - train_size
+
+    # Before splitting, set the seed
+    torch.manual_seed(42) 
+    _, test_dataset = random_split(full_dataset, [train_size, test_size])
+
     test_loader = DataLoader(test_dataset, batch_size=32)
     
     # Evaluate

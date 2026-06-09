@@ -13,8 +13,21 @@ optimizer = optim.Adam(model.parameters(), lr=0.001)
 
 # 2. Data Loaders (use your previous setup)
 full_dataset = ESC50Dataset(csv_path='data/meta/esc50.csv', processed_dir='processed')
+
+# 1. Define sizes
 train_size = int(0.8 * len(full_dataset))
-test_dataset, train_dataset = random_split(full_dataset, [len(full_dataset)-train_size, train_size])
+test_size = len(full_dataset) - train_size
+
+# 2. Split using the variables
+# Before splitting, set the seed
+torch.manual_seed(42) 
+train_dataset, test_dataset = random_split(full_dataset, [train_size, test_size])
+
+
+# 3. Double check (Good for debugging)
+print(f"Train set size: {len(train_dataset)}")
+print(f"Test set size: {len(test_dataset)}")
+
 train_loader = DataLoader(train_dataset, batch_size=32, shuffle=True)
 
 # 3. Training Loop
