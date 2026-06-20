@@ -5,7 +5,7 @@ import numpy as np
 import pandas as pd
 from src.model import AudioCNN
 
-# 1. Setup Environment Configurations
+# Setup Environment Configurations
 DEVICE = torch.device("cpu") 
 MODEL_PATH = "models/audio_model.pth"
 CSV_PATH = "data/meta/esc50.csv"
@@ -14,12 +14,12 @@ CSV_PATH = "data/meta/esc50.csv"
 df = pd.read_csv(CSV_PATH)
 target_to_category = dict(zip(df['target'].astype(int), df['category']))
 
-# 2. Load the Weights into the Model Architecture securely
+# Load the Weights into the Model Architecture securely
 model = AudioCNN(num_classes=50)
 model.load_state_dict(torch.load(MODEL_PATH, map_location=DEVICE))
 model.eval() 
 
-# 3. Secure Inference Engine Pipeline
+# Secure Inference Engine Pipeline
 def predict_audio(audio_file):
     if audio_file is None:
         return {"Error": "No audio file provided"}
@@ -50,7 +50,7 @@ def predict_audio(audio_file):
         
     return confidences
 
-# 4. Construct Gradio Web Services with User Feedback/Flagging
+# Construct Gradio Web Services with User Feedback/Flagging
 demo = gr.Interface(
     fn=predict_audio, 
     inputs=gr.Audio(type="filepath"), 
