@@ -4,16 +4,16 @@ import os
 from pathlib import Path
 
 def extract_and_normalize_mel_spectrogram(file_path):
-    # 1. Load the audio file (ESC-50 clips are exactly 5 seconds)
+    # Load the audio file (ESC-50 clips are exactly 5 seconds)
     y, sr = librosa.load(file_path, sr=22050) 
     
-    # 2. Extract Mel-Spectrogram
+    # Extract Mel-Spectrogram
     mel_spec = librosa.feature.melspectrogram(y=y, sr=sr, n_mels=128)
     
-    # 3. Convert to Log-Scale (dB)
+    # Convert to Log-Scale (dB)
     log_mel_spec = librosa.power_to_db(mel_spec, ref=np.max)
     
-    # 4. Standard Gaussian Normalization (Z-score)
+    # Standard Gaussian Normalization (Z-score)
     # This centers the data around 0 with a standard deviation of 1
     mean = log_mel_spec.mean()
     std = log_mel_spec.std()
