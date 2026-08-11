@@ -1,39 +1,39 @@
 # audio-ai-project
 
-Environmental sound classification on the [ESC-50](https://github.com/karolpiczak/ESC-50) dataset using a custom convolutional neural network (CNN) built with PyTorch. The project covers the full machine-learning pipeline — preprocessing, dataset loading, training, evaluation, inference — and ships a Gradio web interface for interactive prediction and human-in-the-loop correction data collection.
+Environmental sound classification on the [ESC-50](https://github.com/karolpiczak/ESC-50) dataset using a custom convolutional neural network (CNN) built with PyTorch. The project covers the full machine-learning pipeline - preprocessing, dataset loading, training, evaluation, inference - and ships a Gradio web interface for interactive prediction and human-in-the-loop correction data collection.
 
 ## Features
 
-- **Custom CNN (`AudioCNN`)** — 4 convolutional blocks (BatchNorm + ReLU + pooling) with adaptive pooling and a fully-connected classifier head.
-- **Mel-spectrogram preprocessing** — audio is loaded at 22.05 kHz, converted to log Mel-spectrograms (128 Mel bands), and Z-score normalized before being saved as `.npy` features.
-- **50-class classification** — maps audio to one of the 50 ESC-50 categories (dog bark, rain, helicopter, etc.).
-- **Training & evaluation** — 80/20 train/test split, Adam optimizer, CosineAnnealingLR scheduler, and test accuracy reporting.
-- **CLI inference** — predict the class and confidence of a single audio file from the terminal.
-- **Gradio web app** — upload audio, get live predictions, and flag misclassifications to build a corrected dataset (`external_esc50.csv`) that can be used for further training.
+- **Custom CNN (`AudioCNN`)** - 4 convolutional blocks (BatchNorm + ReLU + pooling) with adaptive pooling and a fully-connected classifier head.
+- **Mel-spectrogram preprocessing** - audio is loaded at 22.05 kHz, converted to log Mel-spectrograms (128 Mel bands), and Z-score normalized before being saved as `.npy` features.
+- **50-class classification** - maps audio to one of the 50 ESC-50 categories (dog bark, rain, helicopter, etc.).
+- **Training & evaluation** - 80/20 train/test split, Adam optimizer, CosineAnnealingLR scheduler, and test accuracy reporting.
+- **CLI inference** - predict the class and confidence of a single audio file from the terminal.
+- **Gradio web app** - upload audio, get live predictions, and flag misclassifications to build a corrected dataset (`external_esc50.csv`) that can be used for further training.
 
 ## Project Structure
 
 ```
 audio-ai-project/
-├── app.py               # Gradio web interface + custom flagging callback (data collection)
-├── requirements.txt     # Python dependencies
-├── test_loader.py       # Smoke test for the dataset loader
-├── data/
-│   ├── audio/           # Raw ESC-50 audio files (.wav) — expected location
-│   ├── external_audio/  # Archived audio flagged as misclassified via the app
-│   └── meta/
-│       ├── esc50.csv           # ESC-50 labels/metadata
-│       └── external_esc50.csv  # New ground-truth labels collected via the app
-├── processed/           # Precomputed .npy Mel-spectrogram features
-├── models/
-│   └── audio_model.pth  # Trained model weights
-└── src/
-    ├── preprocess.py    # Mel-spectrogram extraction + normalization -> .npy
-    ├── dataset.py       # PyTorch Dataset for loading .npy features
-    ├── model.py         # AudioCNN definition
-    ├── train.py         # Training loop
-    ├── eval.py          # Accuracy evaluation on the held-out test split
-    └── inference.py     # Single-file CLI prediction
+|-- app.py               # Gradio web interface + custom flagging callback (data collection)
+|-- requirements.txt     # Python dependencies
+|-- test_loader.py       # Smoke test for the dataset loader
+|-- data/
+|   |-- audio/           # Raw ESC-50 audio files (.wav) - expected location
+|   |-- external_audio/  # Archived audio flagged as misclassified via the app
+|   `-- meta/
+|       |-- esc50.csv           # ESC-50 labels/metadata
+|       `-- external_esc50.csv  # New ground-truth labels collected via the app
+|-- processed/           # Precomputed .npy Mel-spectrogram features
+|-- models/
+|   `-- audio_model.pth  # Trained model weights
+`-- src/
+    |-- preprocess.py    # Mel-spectrogram extraction + normalization -> .npy
+    |-- dataset.py       # PyTorch Dataset for loading .npy features
+    |-- model.py         # AudioCNN definition
+    |-- train.py         # Training loop
+    |-- eval.py          # Accuracy evaluation on the held-out test split
+    `-- inference.py     # Single-file CLI prediction
 ```
 
 ## Installation
@@ -103,7 +103,7 @@ Edit the `sample_file` path inside the script to test your own audio.
 python app.py
 ```
 
-Open the printed local URL. Upload an audio file to see the model's prediction, then flag it as **True Prediction** or **False Prediction**. When you flag a misclassification, use the dropdown to supply the correct label — the app archives the audio to `data/external_audio/`, preprocesses it into `processed/`, and appends a new ground-truth row to `data/meta/external_esc50.csv` (useful for active-learning / retraining loops).
+Open the printed local URL. Upload an audio file to see the model's prediction, then flag it as **True Prediction** or **False Prediction**. When you flag a misclassification, use the dropdown to supply the correct label - the app archives the audio to `data/external_audio/`, preprocesses it into `processed/`, and appends a new ground-truth row to `data/meta/external_esc50.csv` (useful for active-learning / retraining loops).
 
 ## Pipeline Details
 
@@ -112,11 +112,11 @@ Open the printed local URL. Upload an audio file to see the model's prediction, 
 | Sampling rate | 22.05 kHz |
 | Feature | Log Mel-spectrogram, 128 Mel bands |
 | Normalization | Z-score (`(x - mean) / (std + 1e-6)`) |
-| Model | `AudioCNN` — 4 conv blocks → adaptive pooling → 2 FC layers (dropout 0.5) |
+| Model | `AudioCNN` - 4 conv blocks, adaptive pooling, 2 FC layers (dropout 0.5) |
 | Optimizer | Adam (lr 0.001) + CosineAnnealingLR |
 | Loss | CrossEntropyLoss |
 | Classes | 50 (ESC-50 targets) |
 
 ## License
 
-[MIT](LICENSE) © 2026 Unabia Sahar
+[MIT](LICENSE) (c) 2026 Unabia Sahar
