@@ -117,6 +117,10 @@ Open the printed local URL. Upload an audio file to see the model's prediction, 
 | Loss | CrossEntropyLoss |
 | Classes | 50 (ESC-50 targets) |
 
+## Results
+
+Accuracy on test set: 78.75%
+
 ## License
 
 [MIT](LICENSE) (c) 2026 Unabia Sahar
